@@ -26,7 +26,8 @@ import java.util.Set;
  */
 public class ClickHouseDynamicTableFactory implements DynamicTableSourceFactory, DynamicTableSinkFactory {
 
-    public static final String IDENTIFIER = "clickhouse";
+    // use different idendifier to avoid confltion with oceanus implementation
+    public static final String IDENTIFIER = "clickhouse-jdbc";
 
     private static final String DRIVER_NAME = "ru.yandex.clickhouse.ClickHouseDriver";
 
@@ -54,11 +55,11 @@ public class ClickHouseDynamicTableFactory implements DynamicTableSourceFactory,
             .noDefaultValue()
             .withDescription("the jdbc password.");
 
-    public static final ConfigOption<String> FORMAT = ConfigOptions
-            .key("format")
-            .stringType()
-            .noDefaultValue()
-            .withDescription("the format.");
+//    public static final ConfigOption<String> FORMAT = ConfigOptions
+//            .key("format")
+//            .stringType()
+//            .noDefaultValue()
+//            .withDescription("the format.");
 
     @Override
     public String factoryIdentifier() {
@@ -70,15 +71,16 @@ public class ClickHouseDynamicTableFactory implements DynamicTableSourceFactory,
         Set<ConfigOption<?>> requiredOptions = new HashSet<>();
         requiredOptions.add(URL);
         requiredOptions.add(TABLE_NAME);
-        requiredOptions.add(USERNAME);
-        requiredOptions.add(PASSWORD);
-        requiredOptions.add(FORMAT);
+//        requiredOptions.add(FORMAT);
         return requiredOptions;
     }
 
     @Override
     public Set<ConfigOption<?>> optionalOptions() {
-        return new HashSet<>();
+        Set<ConfigOption<?>> set = new HashSet<>();
+        set.add(USERNAME);
+        set.add(PASSWORD);
+        return set;
     }
 
     @Override
